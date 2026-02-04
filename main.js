@@ -10,11 +10,11 @@ class LottoGenerator extends HTMLElement {
                     text-align: center;
                     padding: 50px;
                     border-radius: 15px;
-                    background: #2c2c2c;
-                    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+                    background: var(--wrapper-bg);
+                    box-shadow: var(--wrapper-shadow);
                 }
                 h1 {
-                    color: #fff;
+                    color: var(--text-color);
                     font-size: 2.5em;
                     margin-bottom: 20px;
                 }
@@ -28,8 +28,8 @@ class LottoGenerator extends HTMLElement {
                     width: 50px;
                     height: 50px;
                     border-radius: 50%;
-                    background: #444;
-                    color: #fff;
+                    background: var(--number-bg);
+                    color: var(--text-color);
                     font-size: 1.5em;
                     display: flex;
                     align-items: center;
@@ -39,16 +39,16 @@ class LottoGenerator extends HTMLElement {
                     padding: 15px 30px;
                     border: none;
                     border-radius: 10px;
-                    background: #007bff;
-                    color: #fff;
+                    background: var(--button-bg);
+                    color: var(--text-color);
                     font-size: 1.2em;
                     cursor: pointer;
                     transition: all 0.3s ease;
-                    box-shadow: 0 0 15px rgba(0,123,255,0.5);
+                    box-shadow: var(--button-shadow);
                 }
                 button:hover {
-                    background: #0056b3;
-                    box-shadow: 0 0 25px rgba(0,123,255,0.8);
+                    background: var(--button-hover-bg);
+                    box-shadow: var(--button-hover-shadow);
                 }
             </style>
             <div class="wrapper">
@@ -86,3 +86,24 @@ class LottoGenerator extends HTMLElement {
 }
 
 customElements.define('lotto-generator', LottoGenerator);
+
+// Theme switching logic
+document.addEventListener('DOMContentLoaded', () => {
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const body = document.body;
+
+    // Load saved theme from localStorage
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light-mode') {
+        body.classList.add('light-mode');
+    }
+
+    themeToggleBtn.addEventListener('click', () => {
+        body.classList.toggle('light-mode');
+        if (body.classList.contains('light-mode')) {
+            localStorage.setItem('theme', 'light-mode');
+        } else {
+            localStorage.setItem('theme', 'dark-mode');
+        }
+    });
+});
