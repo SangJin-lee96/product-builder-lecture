@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comments - Product Builder</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .comments-container {
+            background: var(--wrapper-bg);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: var(--wrapper-shadow);
+            width: 100%;
+            max-width: 800px;
+            margin-top: 50px;
+            text-align: center;
+        }
+        .comments-container h1 {
+            color: var(--text-color);
+            margin-bottom: 30px;
+        }
+        #disqus_thread {
+            text-align: left; /* Align disqus content left */
+        }
+    </style>
+</head>
+<body class="light-mode"> <!-- Apply light-mode class by default or load from local storage if available -->
+    <div class="comments-container">
+        <h1>Leave a Comment</h1>
+        <div id="disqus_thread"></div>
+    </div>
+
+    <script>
+        var disqus_config = function () {
+            this.page.url = 'https://SangJin-lee96.github.io/product-builder-lecture/comments.html';  // Adjust to the specific URL of this comments page
+            this.page.identifier = 'comments-page'; // Unique identifier for the comments page
+            this.page.title = 'Product Builder Comments'; // Title for the comments page
+        };
+
+        (function() { // DON'T EDIT BELOW THIS LINE
+            var d = document, s = d.createElement('script');
+            s.src = 'https://productbuider1.disqus.com/embed.js'; // Using the new provided shortname
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <script src="main.js"></script>
+</body>
+</html>
