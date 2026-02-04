@@ -22,12 +22,13 @@
             color: var(--text-color);
             margin-bottom: 30px;
         }
-        #webcam-container {
+        #image-display {
+            max-width: 100%;
+            max-height: 300px;
             margin-top: 20px;
             border: 2px solid var(--text-color);
             border-radius: 10px;
-            overflow: hidden;
-            display: inline-block;
+            object-fit: contain;
         }
         #label-container div {
             color: var(--text-color);
@@ -50,69 +51,77 @@
             background: var(--button-hover-bg);
             box-shadow: var(--button-hover-shadow);
         }
+        input[type="file"] {
+            margin-top: 20px;
+            color: var(--text-color);
+        }
     </style>
 </head>
 <body class="light-mode">
     <div class="animal-test-container">
         <h1>Animal Face Test</h1>
-        <p style="color: var(--text-color);">Are you a dog or a cat? Let's find out!</p>
-        <button type="button" onclick="init()">Start Camera</button>
-        <div id="webcam-container"></div>
+        <p style="color: var(--text-color);">Upload an image to find out if it's a dog or a cat!</p>
+        <input type="file" id="imageUpload" accept="image/*">
+        <img id="image-display" style="display: none;">
+        <button type="button" id="predictButton" style="display: none;">Predict</button>
         <div id="label-container"></div>
     </div>
 
     <script type="text/javascript">
-        // More API functions here:
-        // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/image
-
-        // the link to your model provided by Teachable Machine export panel
         const URL = "https://teachablemachine.withgoogle.com/models/o6Odif4pZ/";
 
-        let model, webcam, labelContainer, maxPredictions;
+        let model, labelContainer, maxPredictions;
+        let imageDisplay = document.getElementById("image-display");
+        let predictButton = document.getElementById("predictButton");
 
-        // Load the image model and setup the webcam
         async function init() {
             const modelURL = URL + "model.json";
             const metadataURL = URL + "metadata.json";
 
-            // load the model and metadata
-            // Refer to tmImage.loadFromFiles() in the API to support files from a file picker
-            // or files from your local hard drive
-            // Note: the pose library adds "tmImage" object to your window (window.tmImage)
             model = await tmImage.load(modelURL, metadataURL);
             maxPredictions = model.getTotalClasses();
 
-            // Convenience function to setup a webcam
-            const flip = true; // whether to flip the webcam
-            webcam = new tmImage.Webcam(200, 200, flip); // width, height, flip
-            await webcam.setup(); // request access to the webcam
-            await webcam.play();
-            window.requestAnimationFrame(loop);
-
-            // append elements to the DOM
-            document.getElementById("webcam-container").appendChild(webcam.canvas);
             labelContainer = document.getElementById("label-container");
-            for (let i = 0; i < maxPredictions; i++) { // and class labels
+            for (let i = 0; i < maxPredictions; i++) {
                 labelContainer.appendChild(document.createElement("div"));
+            }
+
+            document.getElementById('imageUpload').addEventListener('change', handleFileSelect);
+            predictButton.addEventListener('click', () => predict(imageDisplay));
+        }
+
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    imageDisplay.src = e.target.result;
+                    imageDisplay.style.display = 'block';
+                    predictButton.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                imageDisplay.style.display = 'none';
+                predictButton.style.display = 'none';
+                for (let i = 0; i < maxPredictions; i++) {
+                    labelContainer.childNodes[i].innerHTML = "";
+                }
             }
         }
 
-        async function loop() {
-            webcam.update(); // update the webcam frame
-            await predict();
-            window.requestAnimationFrame(loop);
-        }
-
-        // run the webcam image through the image model
-        async function predict() {
-            // predict can take in an image, video or canvas html element
-            const prediction = await model.predict(webcam.canvas);
+        async function predict(imageElement) {
+            if (!imageElement || imageElement.style.display === 'none') {
+                return; // No image to predict
+            }
+            const prediction = await model.predict(imageElement);
             for (let i = 0; i < maxPredictions; i++) {
                 const classPrediction =
                     prediction[i].className + ": " + prediction[i].probability.toFixed(2);
                 labelContainer.childNodes[i].innerHTML = classPrediction;
             }
         }
+
+        init(); // Initialize the model on page load
     </script>
     <script src="main.js"></script>
 </body>
