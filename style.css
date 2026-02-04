@@ -55,3 +55,17 @@ body {
 .theme-switcher button:hover {
     background: var(--button-hover-bg);
 }
+
+.theme-switcher .contact-link {
+    margin-left: 10px;
+    padding: 10px 15px;
+    border-radius: 5px;
+    background: var(--button-bg);
+    color: var(--text-color);
+    text-decoration: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.theme-switcher .contact-link:hover {
+    background: var(--button-hover-bg);
+}

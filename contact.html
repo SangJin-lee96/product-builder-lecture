@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Partnership Inquiry - Formspree</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .form-container {
+            background: var(--wrapper-bg);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: var(--wrapper-shadow);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+        .form-container h1 {
+            color: var(--text-color);
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-color);
+            font-weight: bold;
+        }
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group textarea {
+            width: calc(100% - 20px);
+            padding: 12px 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1em;
+            background-color: var(--number-bg); /* Use a themed background for inputs */
+            color: var(--text-color);
+        }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+        .form-container button {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            background: var(--button-bg);
+            color: var(--text-color);
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--button-shadow);
+        }
+        .form-container button:hover {
+            background: var(--button-hover-bg);
+            box-shadow: var(--button-hover-shadow);
+        }
+    </style>
+</head>
+<body class="light-mode"> <!-- Apply light-mode class by default or load from local storage if available -->
+    <div class="form-container">
+        <h1>Partnership Inquiry</h1>
+        <form action="https://formspree.io/f/{your-form-id}" method="POST">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="message">Message:</label>
+                <textarea id="message" name="message" required></textarea>
+            </div>
+            <button type="submit">Send Inquiry</button>
+        </form>
+    </div>
+</body>
+</html>
